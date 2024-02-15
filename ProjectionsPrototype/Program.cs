@@ -2,9 +2,12 @@
 using Marten.Events.Aggregation;
 using Marten.Events.Projections;
 using Microsoft.Extensions.Configuration;
+using ProjectionsPrototype;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Threading.Tasks;
+
 
 class Program
 {
@@ -21,43 +24,80 @@ class Program
         });
 
         using var session = store.OpenSession();
+        using var query = store.QuerySession();
 
         
-        var cartResult = await CreateCartAsync(session);
-        Console.WriteLine(cartResult);
+        while (true)
+        {
+            string choose = View.Menu();
+            Console.Clear();
 
-        var appendResult = await AppendToCartAsync(session);
-        Console.WriteLine(appendResult);
 
-        var p1Result = await GetProjection1Async(session);
-        Console.WriteLine(p1Result);
+            if (choose.Equals("1"))
+            {
+                string productName = View.SetQuestion("Add produtc"); Console.Clear();
+                int quantity = View.SetQuantity("Add quantity"); Console.Clear();
+                string address = View.SetQuestion("Add address"); Console.Clear();
+                string pNumber = View.SetQuestion("Add phoneNumber"); Console.Clear();
+                View.Loading(); Console.Clear();
 
-        var p2Result = await GetProjection2Async(session);
-        Console.WriteLine(p2Result);
+                var cartResult = await CreateCartAsync(session, productName, quantity, address, pNumber);
+                Console.WriteLine(cartResult);
 
+                var appendResult = await AppendToCartAsync(session, productName, quantity);
+                Console.WriteLine(appendResult);
+
+                var p1Result = await GetProjection1Async(session);
+                Console.WriteLine(p1Result);
+
+                var p2Result = await GetProjection2Async(session);
+                Console.WriteLine(p2Result);
+            }
+            else if (choose.Equals("2"))
+            {
+                var projection1Results = await session.Query<Projection1>().ToListAsync();
+                Console.WriteLine("Projection1 Results:");
+                foreach (var result in projection1Results)
+                {
+                    Console.WriteLine($"Id: {result.Id}, Products: {string.Join(", ", result.Products)}");
+                }
+
+                var projection2Results = await session.Query<Projection2>().ToListAsync();
+                Console.WriteLine("\nProjection2 Results:");
+                foreach (var result in projection2Results)
+                {
+                    Console.WriteLine($"Id: {result.Id}, Total: {result.Total}");
+                }
+            }
+            else
+            {
+                return;
+            }
+
+        }
         
     }
 
-    static async Task<string> CreateCartAsync(IDocumentSession session)
+    static async Task<string> CreateCartAsync(IDocumentSession session, string productName, int quantity, string address, string phoneNumber)
     {
         session.Events.StartStream(
-            new AddedToCart("Under Pants", 5),
-            new UptadedShippingInformation("Luiz F, 1880", "36436666")
+            new AddedToCart(productName, quantity),
+            new UptadedShippingInformation(address, phoneNumber)
             );
 
         await session.SaveChangesAsync();
         return "Cart created!";
     }
 
-    static async Task<string> AppendToCartAsync(IDocumentSession session)
+    static async Task<string> AppendToCartAsync(IDocumentSession session, string productName, int quantity)
     {
         session.Events.Append(
             new Guid(" 018d83c1-eeb7-42a3-a7ba-24bfcb056798"),
-            new AddedToCart("Jacket", 2)
+            new AddedToCart(productName, quantity)
             );
 
         await session.SaveChangesAsync();
-        return "Item appended to cart!";
+        return "Item adicionado ao carrinho!";
     }
 
     static async Task<string> GetProjection1Async(IDocumentSession session)

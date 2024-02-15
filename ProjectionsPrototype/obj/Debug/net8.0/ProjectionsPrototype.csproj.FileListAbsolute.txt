@@ -152,3 +152,4 @@ C:\Users\Matheus\Desktop\Prototypes CSharp\Event sourcing\ProjectionsPrototype\o
 C:\Users\Matheus\Desktop\Prototypes CSharp\Event sourcing\ProjectionsPrototype\obj\Debug\net8.0\ProjectionsPrototype.pdb
 C:\Users\Matheus\Desktop\Prototypes CSharp\Event sourcing\ProjectionsPrototype\obj\Debug\net8.0\ProjectionsPrototype.genruntimeconfig.cache
 C:\Users\Matheus\Desktop\Prototypes CSharp\Event sourcing\ProjectionsPrototype\obj\Debug\net8.0\ref\ProjectionsPrototype.dll
+C:\Users\Matheus\Desktop\Prototypes CSharp\Event sourcing\ProjectionsPrototype\obj\Debug\net8.0\ProjectionsPrototype.sourcelink.json

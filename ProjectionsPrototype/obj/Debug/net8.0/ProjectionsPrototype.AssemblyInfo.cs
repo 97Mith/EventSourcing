@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProjectionsPrototype")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e048f39657a39309532d8dd3c6a95c9a4d56c2a2")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProjectionsPrototype")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProjectionsPrototype")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
